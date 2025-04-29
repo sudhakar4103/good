@@ -1,0 +1,75 @@
+N-Queens Problem with Backtracking
+I solved the N-Queens problem using backtracking. Theory:
+- Place N queens on an N×N board so that no two attack each other (no same row, column, or diagonal).
+- Use a 1D array 'board' where index = row and value = column.
+- is_safe checks:
+* Same column.
+* Same diagonal: |col_diff| == |row_diff|.
+- backtracking:
+* Recursively place queens row by row.
+* If row == N, a solution is found.
+* Otherwise, try each column; on failure, backtrack to try next.
+- Complexity: Exponential in N, but early pruning reduces actual search space.
+
+
+
+
+Program 4: N-Queens with Backtracking
+python
+Copy
+Edit
+def solve_nqueens(n):
+    solutions = []
+    board = [-1] * n
+Student: “Define solve_nqueens. board[row] = col records queen placements; -1 means ‘unassigned’.”
+
+python
+Copy
+Edit
+    def is_safe(row, col):
+        for prev in range(row):
+            if board[prev] == col or abs(board[prev] - col) == row - prev:
+                return False
+        return True
+Student: “is_safe checks for conflicts:
+
+Same column: board[prev] == col.
+
+Same diagonal: abs(board[prev] - col) == row - prev.”
+
+python
+Copy
+Edit
+    def backtrack(row=0):
+        if row == n:
+            solutions.append(board.copy())
+            return True
+        for col in range(n):
+            if is_safe(row, col):
+                board[row] = col
+                if backtrack(row+1):
+                    return True
+        return False
+Student: “backtrack tries to place a queen in each column of the current row.
+
+If row == n, we’ve placed all queens—record a solution and stop.
+
+Otherwise, for each col, if safe, place the queen and recurse to the next row.
+
+If recursion succeeds, bubble True up; otherwise, try the next column. If none work, return False.”
+
+python
+Copy
+Edit
+    backtrack()
+    return solutions[0] if solutions else None
+Student: “Start backtracking at row 0, then return the first solution if any.”
+
+python
+Copy
+Edit
+if __name__ == '__main__':
+    n = int(input('N (queens): '))
+    sol = solve_nqueens(n)
+    print('Solution (row:col):', list(enumerate(sol)) if sol else 'No solution')
+Student: “Read n, solve the problem, then print each row’s column or report failure.”

@@ -1,0 +1,12 @@
+Expert System for Medical Advice
+I built a minimal rule-based expert system. Theory:
+- Prompts the user for a symptom and uses hard-coded rules to advise:
+* 'fever' -> General Medicine.
+* 'injury' -> Emergency & Orthopedics.
+* 'chest' or 'pain' -> Cardiology.
+* 'checkup' -> Routine General Medicine.
+- If no rule matches, provides a default suggestion to consult reception.
+- In a full expert system, you'd separate:
+* Knowledge base (facts and rules).
+* Inference engine (forward/backward chaining).
+* User interface.

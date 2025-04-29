@@ -1,0 +1,42 @@
+Selection Sort
+In my practical, I coded Selection Sort, a simple greedy sorting algorithm. Theory:
+- At each iteration, select the smallest element from the unsorted portion.
+- Swap it into its correct position, growing the sorted region by one.
+- Always performs O(n^2) comparisons and swaps in the worst and average cases.
+- Time complexity: O(n^2), Space complexity: O(1) (in-place).
+- Not stable: equal elements may change order.
+
+
+
+Program 3: Selection Sort
+python
+Copy
+Edit
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+Student: “Define selection_sort:
+
+n = len(arr).
+
+Outer loop i from 0 to n-1: we’ll place the correct element at arr[i].
+
+Inner loop j finds the index min_idx of the smallest element in the unsorted suffix.
+
+Swap arr[i] with arr[min_idx].
+
+Return the sorted list.”
+
+python
+Copy
+Edit
+if __name__ == '__main__':
+    arr = list(map(int, input('Enter numbers: ').split()))
+    print('Sorted:', selection_sort(arr))
+Student: “Read a line of numbers, split into a list of ints, sort it, and print.”

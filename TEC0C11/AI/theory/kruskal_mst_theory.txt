@@ -1,0 +1,98 @@
+Kruskal's Minimal Spanning Tree Theory
+Kruskal's Algorithm builds an MST by sorting all edges and adding them if they don't form a cycle:
+- Sort edges by increasing weight.
+- Use Union-Find to detect cycles: union by rank + path compression.
+- Add edges until n-1 edges selected. Key Points:
+1. Input: list of edges (u, v, weight).
+2. Data structure: Union-Find (parent[], rank[]).
+3. Time complexity: O(E log E) for sorting + O(E ?(V)) for unions.
+4. Output: n-1 edges without cycles. Pseudocode:
+sort edges by weight
+for each edge (u, v) in sorted order: if find(u) ? find(v):
+union(u, v)
+add edge to MST
+if MST has V-1 edges: break
+
+
+
+
+
+Explanation:
+
+class UnionFind:
+“Defines the disjoint-set data structure.”
+
+def __init__(self, n):
+“Constructor taking n elements.”
+
+self.parent = list(range(n))
+“Initially, each element is its own parent (its own set).”
+
+self.rank = [0] * n
+“Rank helps keep trees shallow on union.”
+
+def find(self, x):
+“Find root of x with path compression.”
+
+if self.parent[x] != x:
+“If x is not its own parent…”
+
+self.parent[x] = self.find(self.parent[x])
+“…recursively find and attach x directly to root.”
+
+return self.parent[x]
+“Return the representative root.”
+
+def union(self, x, y):
+“Union two sets; returns False if already together.”
+
+rx, ry = self.find(x), self.find(y)
+“Find roots of both.”
+
+11–12. Already same root?
+“If yes, adding this edge makes a cycle—skip.”
+
+if self.rank[rx] < self.rank[ry]:
+“Ensure rx has at least as large rank as ry.”
+
+rx, ry = ry, rx
+“Swap if necessary.”
+
+self.parent[ry] = rx
+“Attach ry under rx.”
+
+16–17. Equal rank?
+“If they were equal, increment rx’s rank.”
+
+return True
+“Union succeeded.”
+
+def kruskal_mst(edges, n):
+“Main Kruskal function: takes edge list, vertex count.”
+
+uf = UnionFind(n)
+“Initialize Union-Find structure.”
+
+mst = []
+“List to collect MST edges.”
+
+edges.sort(key=lambda x: x[2])
+“Sort edges ascending by weight.”
+
+for u, v, w in edges:
+“Process edges in weight order.”
+
+if uf.union(u, v):
+“If u and v were in different sets…”
+
+mst.append((u, v, w))
+“…add this edge to the MST.”
+
+26–27. Stop when complete.
+“Break once we have n-1 edges.”
+
+return mst
+“Return the final edge list.”
+
+29–40. __main__ block
+“Standard I/O: read n, m, then edge triples, call kruskal_mst, and print the MST.”

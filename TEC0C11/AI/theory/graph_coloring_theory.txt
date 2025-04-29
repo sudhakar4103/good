@@ -1,0 +1,78 @@
+Graph Coloring with Backtracking
+I implemented a backtracking solution for graph m-coloring. Theory:
+- Assign colors 1..m to N vertices so that adjacent vertices differ in color.
+- Use an array 'color' where color[i] is the color of vertex i (0 if unassigned).
+- is_valid ensures no neighbor of the current vertex has the same color.
+- backtracking:
+* Try to color vertex 0..N-1 in order.
+* For each vertex, loop through colors; if valid, assign and recurse.
+* On failure, reset and backtrack.
+- This is a typical Constraint Satisfaction Problem (CSP).
+
+
+
+
+
+Program 5: Graph Coloring with Backtracking
+python
+Copy
+Edit
+def graph_coloring(graph, m):
+    n = len(graph)
+    color = [0] * n
+Student: “graph is an adjacency list; m is the max number of colors. color[i] holds the assigned color (0 = uncolored).”
+
+python
+Copy
+Edit
+    def is_valid(node, c):
+        for nei in graph[node]:
+            if color[nei] == c:
+                return False
+        return True
+Student: “Check that no neighbor of node already has color c.”
+
+python
+Copy
+Edit
+    def backtrack(node=0):
+        if node == n:
+            return True
+        for c in range(1, m+1):
+            if is_valid(node, c):
+                color[node] = c
+                if backtrack(node+1):
+                    return True
+        color[node] = 0
+        return False
+Student: “Try to color each vertex in order:
+
+If node == n, all vertices are colored—success.
+
+Otherwise, for each color c, if valid, assign and recurse.
+
+On failure, reset color[node] and backtrack.”
+
+python
+Copy
+Edit
+    if backtrack():
+        return color
+    return None
+Student: “Return the coloring if found, else None.”
+
+python
+Copy
+Edit
+if __name__ == '__main__':
+    n = int(input('Number of vertices: '))
+    e = int(input('Number of edges: '))
+    graph = {i: [] for i in range(n)}
+    for _ in range(e):
+        u, v = map(int, input().split())
+        graph[u].append(v)
+        graph[v].append(u)
+    m = int(input('Number of colors: '))
+    sol = graph_coloring(graph, m)
+    print('Coloring:' if sol else 'No valid coloring', sol or '')
+Student: “In main, build the graph from input edges, read m, solve, and print the result.”

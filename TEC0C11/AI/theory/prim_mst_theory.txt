@@ -1,0 +1,91 @@
+Prim's Minimal Spanning Tree Theory
+Prim's Algorithm grows an MST by adding the cheapest edge from the tree to a new vertex:
+- Start from an arbitrary vertex.
+- Maintain a set of selected vertices and a priority of edges crossing the cut.
+- At each step, choose the minimum weight edge connecting selected to unselected vertices.
+Key Points:
+1. Input: weighted, undirected, connected graph (matrix or list).
+2. Data structures: boolean selected[], scanning edges -> O(n^2), or use min- heap -> O(E log V).
+3. Time complexity:
+- O(V^2) with adjacency matrix scanning.
+- O(E log V) with binary heap and adjacency list.
+4. Output: n-1 edges forming the MST. Pseudocode (matrix version):
+selected[0] = true for k from 1 to V-1:
+  find edge (u, v) of minimum weight with selected[u]=true and selected[v]=false
+add (u, v) to MST selected[v] = true
+
+
+
+
+
+“I import sys to use sys.maxsize as an initial ‘infinite’ weight.”
+
+def prim_mst(graph, n):
+“Define a function taking an adjacency matrix graph and vertex count n.”
+
+selected = [False] * n
+“Boolean list marking which vertices are in the MST.”
+
+selected[0] = True
+“Arbitrarily start the tree from vertex 0.”
+
+mst_edges = []
+“Empty list to collect the chosen edges.”
+
+for _ in range(n - 1):
+“We need exactly n-1 edges for a spanning tree.”
+
+min_weight = sys.maxsize
+“Reset the minimum edge weight to a very large value each iteration.”
+
+u = v = -1
+“Placeholders for the endpoints of the minimum edge found.”
+
+for i in range(n):
+“Scan each vertex i.”
+
+if selected[i]:
+“Only consider edges from vertices already in the MST.”
+
+for j, w in enumerate(graph[i]):
+“Check every neighbor j, with weight w.”
+
+if not selected[j] and w != 0 and w < min_weight:
+“If j is outside the MST, there is an edge (w!=0), and its weight is smaller than any seen so far…”
+
+min_weight = w
+“…update min_weight.”
+
+u, v = i, j
+“Record i→j as the current best edge.”
+
+selected[v] = True
+“Include the new vertex v in the MST.”
+
+mst_edges.append((u, v, min_weight))
+“Add that edge to our result list.”
+
+return mst_edges
+“After n-1 iterations, return the list of edges.”
+
+if __name__ == '__main__':
+“Standard guard to run as a script.”
+
+n = int(input(...))
+“Read the number of vertices.”
+
+print(...)
+“Prompt the user for the adjacency matrix.”
+
+graph = [...]
+“Read each matrix row as a list of ints.”
+
+mst = prim_mst(graph, n)
+“Call the MST function.”
+
+print(...)
+“Header before showing edges.”
+
+24–25. Loop to print each edge
+“Print the endpoints u, v and their weight.”
+

@@ -1,0 +1,103 @@
+A* Search on a 2D Grid
+I implemented A* to find the shortest path on a grid with obstacles. Theory:
+- A* combines the cost from the start (g(n)) and a heuristic estimate to the goal (h(n)) to compute f(n) = g(n) + h(n).
+- Heuristic: Manhattan distance (|dx| + |dy|) is admissible and consistent for 4-way grid movement.
+- Uses a priority queue (min-heap) to always expand the node with the lowest f-score.
+- Maintains:
+* open_set: nodes to be evaluated.
+* came_from: map to reconstruct the path.
+* g_score: best-known cost from start.
+- Time complexity: O(b^d) in worst case, but efficient with a good heuristic.
+- Space complexity: O(b^d) to store open nodes.
+
+
+
+
+## Program 2: A* Search on a 2D Grid
+
+1. ```python
+import heapq
+Student: “Import the heapq module to maintain a min-heap for our open set.”
+
+python
+Copy
+Edit
+def astar(grid, start, goal):
+    rows, cols = len(grid), len(grid[0])
+    def h(p):
+        return abs(p[0]-goal[0]) + abs(p[1]-goal[1])
+Student: “Define astar. We compute dimensions, then define a heuristic h(p) as Manhattan distance from any point p to the goal.”
+
+python
+Copy
+Edit
+    open_set = [(h(start), 0, start)]
+    came_from = {}
+    g_score = {start: 0}
+    directions = [(1,0),(-1,0),(0,1),(0,-1)]
+Student: “Initialize:
+
+open_set heap with a tuple (f, g, node), where f = g + h; initially f = h(start), g = 0.
+
+An empty came_from map for path reconstruction.
+
+g_score dict storing the best known cost to reach each node—start is zero.
+
+directions list for 4-way movement.”
+
+python
+Copy
+Edit
+    while open_set:
+        _, g, current = heapq.heappop(open_set)
+        if current == goal:
+            path = []
+            while current in came_from:
+                path.append(current)
+                current = came_from[current]
+            path.append(start)
+            return path[::-1]
+Student: “While there are nodes to explore, pop the entry with lowest f. If it’s the goal, reconstruct the path by following came_from pointers back to start and return it.”
+
+python
+Copy
+Edit
+        for d in directions:
+            neighbor = (current[0]+d[0], current[1]+d[1])
+            r, c = neighbor
+            if 0 <= r < rows and 0 <= c < cols and grid[r][c] == 0:
+                tentative_g = g + 1
+                if tentative_g < g_score.get(neighbor, float('inf')):
+                    came_from[neighbor] = current
+                    g_score[neighbor] = tentative_g
+                    f = tentative_g + h(neighbor)
+                    heapq.heappush(open_set, (f, tentative_g, neighbor))
+    return None
+Student: “For each of the four neighbors:
+
+Check it’s in bounds and not an obstacle (grid[r][c] == 0).
+
+Compute tentative_g = g + 1.
+
+If this is a better path (< existing g_score), update:
+
+came_from to point back to current,
+
+g_score,
+
+compute new f and push (f, tentative_g, neighbor) onto the heap. If we exhaust the heap without reaching the goal, return None (no path).”
+
+python
+Copy
+Edit
+if __name__ == '__main__':
+    r = int(input('Rows: '))
+    c = int(input('Cols: '))
+    print('Enter grid rows (0=free,1=obstacle):')
+    grid = [list(map(int, input().split())) for _ in range(r)]
+    sr, sc = map(int, input('Start (row col): ').split())
+    gr, gc = map(int, input('Goal (row col): ').split())
+    path = astar(grid, (sr, sc), (gr, gc))
+    print('Path found:' if path else 'No path', path or '')
+Student: “In main, read grid dimensions, the grid itself, start and goal coordinates, then call astar and print the resulting path or indicate failure.”
+

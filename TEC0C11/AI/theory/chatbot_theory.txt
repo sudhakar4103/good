@@ -1,0 +1,10 @@
+Elementary Chatbot
+I created a simple rule-based chatbot. Theory:
+- Uses an infinite loop (while True) to continuously read user input.
+- Normalizes input to lowercase for case-insensitive matching.
+- Checks for specific keywords:
+* 'bye' to exit.
+* 'hello' or 'hi' for greetings.
+* 'price' for product information.
+- Default fallback for unrecognized queries.
+- This design is straightforward but not scalable-real chatbots use NLP and state machines.

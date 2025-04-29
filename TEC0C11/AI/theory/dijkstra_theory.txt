@@ -1,0 +1,68 @@
+Dijkstra's Shortest Path Theory
+Dijkstra's Algorithm finds shortest paths from a source to all vertices in a non-negative weighted graph:
+- Maintain dist[v] = current best distance from source.
+- Use a min-heap (priority queue) of (dist, vertex).
+- Relax edges: when visiting u, for each neighbor v, if dist[u] + w(u,v) < dist[v], update.
+Key Points:
+1. Works with non-negative edge weights.
+2. Data structures: dist array, min-heap of size up to V.
+3. Time complexity: O((V + E) log V) with binary heap.
+4. Output: dist[] array of shortest path distances. Pseudocode:
+initialize dist[source] = 0, dist[others] = ?
+push (0, source) into heap while heap not empty:
+(d, u) = pop heap
+if d > dist[u]: continue for each neighbor v of u:
+if dist[u] + w(u,v) < dist[v]:
+dist[v] = dist[u] + w(u,v) push (dist[v], v) into heap
+
+
+
+
+
+import heapq
+“Import for priority queue operations.”
+
+def dijkstra(graph, start):
+“Function taking adjacency matrix and source index.”
+
+n = len(graph)
+“Number of vertices.”
+
+dist = [inf] * n
+“Initialize all distances to infinity.”
+
+dist[start] = 0
+“Distance to source is zero.”
+
+pq = [(0, start)]
+“Min-heap seeded with the source.”
+
+while pq:
+“Process until no candidates remain.”
+
+d, u = heappop(pq)
+“Extract the vertex u with smallest tentative distance d.”
+
+9–10. Stale entries?
+“If this d is worse than the best known dist[u], skip.”
+
+for v, w in enumerate(graph[u]):
+“For each neighbor v of u, with edge weight w.”
+
+if w > 0:
+“Skip non-existent edges (0 in our matrix means none).”
+
+nd = d + w
+“New distance via u.”
+
+14–15. Relaxation test & update
+“If this route is better, record it in dist[v].”
+
+heappush(pq, (nd, v))
+“Add v back into the queue with its updated cost.”
+
+return dist
+“When done, dist has all shortest-path distances.”
+
+18–26. I/O block
+“Read n, the adjacency matrix, the source, call dijkstra, and display each src→v distance.”

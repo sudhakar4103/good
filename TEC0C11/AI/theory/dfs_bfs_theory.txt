@@ -1,0 +1,109 @@
+Depth-First Search (DFS) & Breadth-First Search (BFS)
+As a student, I implemented both DFS and BFS to traverse an undirected graph. Here is the theory behind them:
+1. DFS (Depth-First Search):
+- Explores as far along each branch before backtracking.
+- Uses recursion (or an explicit stack) to keep track of the next vertices.
+- Ideal for pathfinding, cycle detection, and topological sorting.
+- Time complexity: O(V + E), where V is vertices and E is edges.
+- Space complexity: O(V) due to the recursion stack or visited set.
+2. BFS (Breadth-First Search):
+- Explores all neighbors at the present depth before moving on.
+- Uses a queue (FIFO) to track the next vertices.
+  - Ideal for finding the shortest path in unweighted graphs and level-order traversal.
+- Time complexity: O(V + E).
+- Space complexity: O(V) due to the queue and visited set.
+
+
+
+Program 1: Depth-First Search & Breadth-First Search
+Code Explanation (Line-by-Line)
+python
+Copy
+Edit
+from collections import deque
+Student: “Here I import deque from the standard collections module—this gives me an efficient queue for my BFS implementation (constant-time appends/pops on both ends).”
+
+python
+Copy
+Edit
+def dfs(graph, node, visited=None):
+Student: “I define a function dfs that takes an adjacency list graph, a starting node, and an optional visited set.”
+
+python
+Copy
+Edit
+    if visited is None:
+        visited = set()
+Student: “On the very first call, visited is None, so I initialize it to an empty set to track which nodes I’ve already seen.”
+
+python
+Copy
+Edit
+    visited.add(node)
+    print(node, end=' ')
+Student: “I mark the current node as visited, then print it (with no newline) so we can observe the traversal order.”
+
+python
+Copy
+Edit
+    for neighbour in graph.get(node, []):
+        if neighbour not in visited:
+            dfs(graph, neighbour, visited)
+Student: “For each neighbor of the current node, if it hasn’t been visited, I recursively call dfs on it—this is the ‘depth-first’ step.”
+
+python
+Copy
+Edit
+    return visited
+Student: “Finally, I return the visited set so that the caller can inspect which vertices were reached.”
+
+python
+Copy
+Edit
+def bfs(graph, start):
+Student: “Next, I define bfs for breadth-first search, taking the same graph plus a start node.”
+
+python
+Copy
+Edit
+    visited = {start}
+    queue = deque([start])
+Student: “I initialize my visited set with the start node and put that node into a deque called queue.”
+
+python
+Copy
+Edit
+    while queue:
+        node = queue.popleft()
+        print(node, end=' ')
+Student: “While there are nodes in the queue, I pop from the left (FIFO), mark it as the current node, and print it.”
+
+python
+Copy
+Edit
+       for neighbour in graph.get(node, []):
+           if neighbour not in visited:
+               visited.add(neighbour)
+               queue.append(neighbour)
+pgsql
+Copy
+Edit
+*Student:* “For each neighbor of this node, if it’s unvisited, I add it to `visited` and enqueue it. This ensures we expand level by level.”
+
+11. ```python
+    return visited
+Student: “Return the set of all visited vertices at the end.”
+
+python
+Copy
+Edit
+if name == 'main': n = int(input('Number of vertices: ')) m = int(input('Number of edges: ')) graph = {i: [] for i in range(n)} print('Enter edges (u v):') for _ in range(m): u, v = map(int, input().split()) graph[u].append(v) graph[v].append(u) start = int(input('Start node: ')) print('\nDFS order:', end=' ') dfs(graph, start) print('\nBFS order:', end=' ') bfs(graph, start)
+
+perl
+Copy
+Edit
+*Student:* “In my `__main__` guard, I read:
+- `n`, the number of vertices.
+- `m`, the number of edges.
+I build an empty adjacency list `graph`, then read `m` pairs `u v`, adding each undirected edge to both lists.  
+Finally, I read the `start` node, invoke `dfs` and `bfs`, and print their traversal orders.”
